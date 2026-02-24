@@ -3,16 +3,23 @@ Rebuilding Marketing & Customer Communications Approval as an AI-First System
 
 North star: [`one-pager.md`](./one-pager.md)
 
+## Tech decisions (MVP)
+- Web: **Next.js + TypeScript**
+- UI: **Tailwind CSS + daisyUI**
+- DB: **Supabase Postgres**
+- Auth/RLS: **not in MVP** (Option A). Single-tenant prototype for the submission.
+
 ## PR plan (checklist)
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
 - add/adjust tests for new logic
 - preserve the “release gate owns the workflow” requirement (routing + publish blocking)
 
-### PR1 — Repo scaffold + minimal UI shell
-- [ ] Next.js app + basic page layout (no AI)
-- [ ] Minimal navigation: Queue / New Submission / Case Detail (stub)
-- [ ] Basic styling + copy aligned with `one-pager.md`
+### PR1 — Next.js scaffold + daisyUI shell
+- [ ] Next.js + TypeScript scaffold
+- [ ] Tailwind + daisyUI setup
+- [ ] Minimal navigation + pages (stubs): Queue / New Submission / Case Detail
+- [ ] Basic copy aligned with `one-pager.md`
 - [ ] CI-ready scripts (lint/test placeholders)
 
 ### PR2 — Domain model + fixtures (pure TypeScript)
@@ -36,13 +43,17 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [ ] Deterministic routing rules documented in code
 - [ ] Unit tests for routing outcomes across fixtures
 
-### PR6 — Persistence for Release Cases + revision history (local/dev)
-- [ ] Store cases + revisions (SQLite or file-backed store)
-- [ ] Create/Load case endpoints
-- [ ] Tests for create/update/revision append
+### PR6 — Supabase schema + persistence (no auth/RLS)
+- [ ] Supabase project config notes for local/dev
+- [ ] Database schema + migrations for:
+  - [ ] `release_cases`
+  - [ ] `case_revisions`
+  - [ ] `approval_packets`
+- [ ] Minimal DB access layer (create/load/update)
+- [ ] Tests for persistence layer (can be mocked/unit-level if integration is heavy)
 
-### PR7 — Queue + Case Detail UI wired to real data
-- [ ] Queue shows cases by state (pass/needs_changes/escalate)
+### PR7 — Wire UI to real data (Queue + Case Detail)
+- [ ] Queue shows cases by decision/state (pass/needs_changes/escalate)
 - [ ] Case detail shows: decision, violations, citations, required disclosures
 - [ ] Manual test steps in PR description
 
