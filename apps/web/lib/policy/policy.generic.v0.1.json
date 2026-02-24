@@ -1,0 +1,47 @@
+{
+  "policyVersion": "POLICY_GENERIC_v0.1",
+  "rules": [
+    {
+      "id": "R-RETURNS-GUARANTEE",
+      "severity": "high",
+      "description": "No guaranteed returns or certainty language about investment performance.",
+      "patterns": [
+        "\\bguarantee(d|s)?\\b",
+        "\\bguaranteed\\s+returns?\\b",
+        "\\bguaranteed\\s+\\d+%\\b",
+        "\\bbeat\\s+the\\s+market\\b"
+      ],
+      "message": "Avoid guaranteed performance claims."
+    },
+    {
+      "id": "R-RISK-NO-RISK",
+      "severity": "high",
+      "description": "No language implying zero risk.",
+      "patterns": ["\\bno\\s+risk\\b", "\\bzero\\s+risk\\b", "\\brisk[-\\s]?free\\b"],
+      "message": "Avoid implying an investment is risk-free."
+    },
+    {
+      "id": "R-SUPERLATIVE-BEST",
+      "severity": "medium",
+      "description": "Avoid unqualified superlatives and comparative claims.",
+      "patterns": ["\\bthe\\s+best\\b", "\\bbest\\s+returns?\\b", "\\bnumber\\s*1\\b"],
+      "message": "Superlatives require qualification and evidence."
+    },
+    {
+      "id": "R-FEES-ABSOLUTE",
+      "severity": "medium",
+      "description": "Fee claims should be precise and avoid absolutes that may become untrue.",
+      "patterns": ["\\bzero\\s+fees\\b", "\\bno\\s+fees\\b", "\\bfees\\s+forever\\b"],
+      "message": "Fee claims must be precise and include conditions where applicable.",
+      "requiredDisclosures": ["Fee schedule and applicable conditions"]
+    },
+    {
+      "id": "R-PERCENT-RETURN",
+      "severity": "high",
+      "description": "Numeric return claims require strict substantiation and disclosures.",
+      "patterns": ["\\b\\d{1,2}%\\s+returns?\\b", "\\breturns?\\s+of\\s+\\d{1,2}%\\b"],
+      "message": "Numeric return claims require substantiation and mandated disclosures.",
+      "requiredDisclosures": ["Past performance is not indicative of future results"]
+    }
+  ]
+}
