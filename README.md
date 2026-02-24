@@ -1,5 +1,6 @@
 # AI-Native Comms Release Gate
+Rebuilding Marketing & Customer Communications Approval as an AI-First System
 
-Internal governance + routing system for approving outbound comms in a regulated environment.
+This repo contains an internal governance + routing system for approving outbound comms in a regulated environment.
 
-See: `one-pager.md`
+Project direction: `one-pager.md`
