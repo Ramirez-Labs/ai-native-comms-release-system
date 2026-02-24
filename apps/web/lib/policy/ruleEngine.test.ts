@@ -14,22 +14,41 @@ describe("deterministic rule engine", () => {
 
   it("flags needsChanges fixture with superlatives + risk-free language", () => {
     const res = evaluateDeterministicRules(fixtureDrafts.needsChanges, policy);
-    expect(res.firedRuleIds).toEqual(expect.arrayContaining(["R-SUPERLATIVE-BEST", "R-RISK-NO-RISK"]));
+
+    expect(res.firedRuleIds).toEqual(
+      expect.arrayContaining(["R-SUPERLATIVE-BEST", "R-RISK-NO-RISK"])
+    );
+
     expect(res.severity).toBe("high");
-    expect(res.violations.some((v) => v.citation.start >= 0)).toBe(true);
+
+    for (const v of res.violations) {
+      expect(v.citation.start).toBeGreaterThanOrEqual(0);
+      expect(v.citation.end).toBeGreaterThan(v.citation.start);
+      expect(v.citation.sentenceIndex).toBeGreaterThanOrEqual(0);
+    }
   });
 
-  it("flags escalate fixture with guaranteed returns + fee absolutes", () => {
+  it("flags escalate fixture with guaranteed returns + fee absolutes and assigns citations", () => {
     const res = evaluateDeterministicRules(fixtureDrafts.escalate, policy);
+
     expect(res.firedRuleIds).toEqual(
-      expect.arrayContaining(["R-RETURNS-GUARANTEE", "R-PERCENT-RETURN", "R-FEES-ABSOLUTE"])
+      expect.arrayContaining([
+        "R-RETURNS-GUARANTEE",
+        "R-PERCENT-RETURN",
+        "R-FEES-ABSOLUTE",
+      ])
     );
+
     expect(res.severity).toBe("high");
+
     expect(res.requiredDisclosures).toEqual(
       expect.arrayContaining([
         "Past performance is not indicative of future results",
         "Fee schedule and applicable conditions",
       ])
     );
+
+    // The escalate fixture is two lines; each violation should map to a sentence index.
+    expect(res.violations.every((v) => v.citation.sentenceIndex >= 0)).toBe(true);
   });
 });

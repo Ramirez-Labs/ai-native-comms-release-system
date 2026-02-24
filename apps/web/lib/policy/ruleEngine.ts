@@ -1,5 +1,6 @@
 import type { DraftSubmission, Severity, Violation, Citation } from "../domain/types";
 import type { PolicyPack, PolicyRule } from "./types";
+import { findSentenceIndexForOffset, segmentSentences } from "../text/segment";
 
 function maxSeverity(a: Severity, b: Severity): Severity {
   const order: Record<Severity, number> = { low: 0, medium: 1, high: 2 };
@@ -16,14 +17,20 @@ function findFirstMatch(text: string, re: RegExp): { start: number; end: number;
   if (!m || m.index == null) return null;
   const start = m.index;
   const end = start + m[0].length;
-  const snippet = text.slice(start, Math.min(text.length, end + 40));
+
+  const snippetStart = Math.max(0, start - 20);
+  const snippetEnd = Math.min(text.length, end + 40);
+  const snippet = text.slice(snippetStart, snippetEnd);
+
   return { start, end, snippet };
 }
 
-function toCitation(match: { start: number; end: number; snippet: string }): Citation {
+function toCitation(
+  match: { start: number; end: number; snippet: string },
+  sentenceIndex: number
+): Citation {
   return {
-    // Sentence mapping becomes stable in PR4. For now, we set 0.
-    sentenceIndex: 0,
+    sentenceIndex,
     start: match.start,
     end: match.end,
     snippet: match.snippet,
@@ -44,8 +51,9 @@ export function evaluateDeterministicRules(
   policy: PolicyPack
 ): RuleEngineResult {
   const text = submission.text;
-  let severity: Severity = "low";
+  const sentences = segmentSentences(text);
 
+  let severity: Severity = "low";
   const violations: Violation[] = [];
   const disclosures = new Set<string>();
   const firedRuleIds: string[] = [];
@@ -58,6 +66,8 @@ export function evaluateDeterministicRules(
       const match = findFirstMatch(text, re);
       if (!match) continue;
 
+      const sentenceIndex = findSentenceIndexForOffset(sentences, match.start);
+
       firedRuleIds.push(rule.id);
       severity = maxSeverity(severity, rule.severity);
       (rule.requiredDisclosures ?? []).forEach((d) => disclosures.add(d));
@@ -66,11 +76,11 @@ export function evaluateDeterministicRules(
         ruleId: rule.id,
         severity: rule.severity,
         message: rule.message,
-        citation: toCitation(match),
+        citation: toCitation(match, sentenceIndex),
         requiredDisclosures: rule.requiredDisclosures,
       });
 
-      break; // only one violation per rule for now
+      break; // one violation per rule for now
     }
   }
 
