@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). CI merged ✅ (Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -41,10 +41,10 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Unit tests for citation correctness on fixtures
 
 ### PR5 — Routing decision engine (operational responsibility)
-- [ ] Aggregate violations → `severity`
-- [ ] Compute `decision = pass | needs_changes | escalate` with confidence/abstain rules
-- [ ] Deterministic routing rules documented in code
-- [ ] Unit tests for routing outcomes across fixtures
+- [x] Aggregate violations → `severity`
+- [x] Compute `decision = pass | needs_changes | escalate` with confidence/abstain rules
+- [x] Deterministic routing rules documented in code
+- [x] Unit tests for routing outcomes across fixtures
 
 ### PR6 — Supabase schema + persistence (no auth/RLS)
 - [ ] Supabase project config notes for local/dev
