@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). CI merged ✅ (GitHub Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -31,9 +31,9 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Unit tests for type-level helpers / fixtures loading
 
 ### PR3 — Policy pack v0.1 + deterministic rule engine
-- [ ] Add `POLICY_GENERIC_v0.1` with rule IDs + severities + required disclosures
-- [ ] Implement deterministic checks (regex/heuristics) → `violations[]`
-- [ ] Unit tests: each fixture triggers expected rules + severities
+- [x] Add `POLICY_GENERIC_v0.1` with rule IDs + severities + required disclosures
+- [x] Implement deterministic checks (regex/heuristics) → `violations[]`
+- [x] Unit tests: each fixture triggers expected rules + severities
 
 ### PR4 — Sentence-level citation mapping
 - [ ] Sentence splitting + stable citation model `{ sentenceIndex, start, end, snippet }`
