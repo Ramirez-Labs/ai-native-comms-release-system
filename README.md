@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (Next.js scaffold + Tailwind + daisyUI shell).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). CI merged ✅ (GitHub Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -26,9 +26,9 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] CI-ready scripts (lint/build)
 
 ### PR2 — Domain model + fixtures (pure TypeScript)
-- [ ] Define core types: `ReleaseCase`, `CaseRevision`, `Decision`, `Violation`, `PolicyRule`, `ApprovalPacket`
-- [ ] Add fixture drafts: auto-pass / needs-changes / escalate
-- [ ] Unit tests for type-level helpers / fixtures loading
+- [x] Define core types: `ReleaseCase`, `CaseRevision`, `Decision`, `Violation`, `PolicyRule`, `ApprovalPacket`
+- [x] Add fixture drafts: auto-pass / needs-changes / escalate
+- [x] Unit tests for type-level helpers / fixtures loading
 
 ### PR3 — Policy pack v0.1 + deterministic rule engine
 - [ ] Add `POLICY_GENERIC_v0.1` with rule IDs + severities + required disclosures
@@ -80,3 +80,6 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [ ] One-click load of 3 canonical demo scenarios
 - [ ] Copy polish to match one-pager language (“Release Case”, “Approval Packet”, etc.)
 - [ ] Add `/docs/demo-script.md` and `/docs/writeup-500-words.md` outlines
+
+## CI
+GitHub Actions runs `lint`, `test`, and `build` for the web app on every PR and on pushes to `main`.
