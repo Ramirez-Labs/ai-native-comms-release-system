@@ -10,17 +10,13 @@ North star: [`one-pager.md`](./one-pager.md)
 - Auth/RLS: **not in MVP** (Option A). Single-tenant prototype for the submission.
 
 ## PR plan (checklist)
+
+**Progress:** PR1 merged ✅ (Next.js scaffold + Tailwind + daisyUI shell).
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
 - add/adjust tests for new logic
 - preserve the “release gate owns the workflow” requirement (routing + publish blocking)
 
-### PR1 — Next.js scaffold + daisyUI shell
-- [ ] Next.js + TypeScript scaffold
-- [ ] Tailwind + daisyUI setup
-- [ ] Minimal navigation + pages (stubs): Queue / New Submission / Case Detail
-- [ ] Basic copy aligned with `one-pager.md`
-- [ ] CI-ready scripts (lint/test placeholders)
 
 ### PR2 — Domain model + fixtures (pure TypeScript)
 - [ ] Define core types: `ReleaseCase`, `CaseRevision`, `Decision`, `Violation`, `PolicyRule`, `ApprovalPacket`
