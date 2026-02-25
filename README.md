@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). PR8 merged ✅ (OpenAI rewrite suggestions + normalization; demo-safe fallbacks). CI merged ✅ (Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). PR8 merged ✅ (OpenAI rewrite suggestions + normalization; demo-safe fallbacks). PR9 merged ✅ (Approval packet export + persistence). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -72,9 +72,13 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Demo reliability: unmatched suggestions appear under “General suggestions”
 
 ### PR9 — Approval packet generator + export
-- [ ] Generate approval packet (JSON + readable summary)
-- [ ] Include inputs, policy version, rules fired, citations, timestamps, diffs across revisions
-- [ ] Tests for packet shape + required fields
+- [x] Generate approval packet (JSON)
+- [x] Include inputs, policy version, decision/severity/confidence, violations+citation evidence, required disclosures
+- [x] Include revision history summary + simple diff metadata
+- [x] Persist packets to `approval_packets` (idempotent per revision)
+- [x] Export JSON download from case detail
+- [x] Tests for packet shape + required fields
+- [x] Docs: `docs/ui/pr9-approval-packet-export.md`
 
 ### PR10 — Hard publish gate + human sign-off
 - [ ] Publish action blocked unless approved state
