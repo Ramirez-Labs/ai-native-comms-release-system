@@ -44,13 +44,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <NavLink href="/queue" label="Queue" />
               <NavLink href="/new" label="New submission" />
             </nav>
-
-            <div className="divider my-4" />
-
-            <div className="text-xs font-semibold text-base-content/50 px-3">North star</div>
-            <Link className="btn btn-ghost btn-sm justify-start px-3" href="/one-pager">
-              One-pager
-            </Link>
           </aside>
 
           <main className="min-w-0">{children}</main>
