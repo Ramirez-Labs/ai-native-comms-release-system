@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). CI merged ✅ (Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). PR8 merged ✅ (OpenAI rewrite suggestions + normalization; demo-safe fallbacks). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -64,11 +64,12 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Manual test steps documented in PR description + `docs/ui/pr7-wire-ui-real-data.md`
 
 ### PR8 — Constrained LLM step (strict-ish JSON) + rewrite suggestions
-- [ ] OpenAI call generates rewrite suggestions (best-effort; demo-focused)
-- [ ] Response normalization + schema validation (avoid demo breakage)
-- [ ] Ensure deterministic high-severity rules cannot be overridden by LLM output
-- [ ] Tests with mocked OpenAI responses
-- [ ] Docs: `docs/openai/README.md`
+- [x] OpenAI call generates rewrite suggestions (best-effort; demo-focused)
+- [x] Response normalization + schema validation (avoid demo breakage)
+- [x] Ensure deterministic high-severity rules cannot be overridden by LLM output
+- [x] Tests with mocked OpenAI responses
+- [x] Docs: `docs/openai/README.md`
+- [x] Demo reliability: unmatched suggestions appear under “General suggestions”
 
 ### PR9 — Approval packet generator + export
 - [ ] Generate approval packet (JSON + readable summary)
