@@ -140,6 +140,39 @@ export class ReleaseCaseRepo {
     });
   }
 
+  async setCaseStatus(input: {
+    caseId: string;
+    status: "approved" | "published" | "blocked";
+  }): Promise<void> {
+    const ts = nowIso();
+    const { error } = await this.supabase
+      .from("release_cases")
+      .update({ status: input.status, updated_at: ts })
+      .eq("id", input.caseId);
+
+    if (error) throw error;
+  }
+
+  async setApprovalPacketSignoff(input: {
+    packetId: string;
+    approverName: string;
+    approverEmail?: string;
+    overrideReason: string;
+    signedAt: string;
+  }): Promise<void> {
+    const { error } = await this.supabase
+      .from("approval_packets")
+      .update({
+        approver_name: input.approverName,
+        approver_email: input.approverEmail ?? null,
+        override_reason: input.overrideReason,
+        signed_at: input.signedAt,
+      })
+      .eq("id", input.packetId);
+
+    if (error) throw error;
+  }
+
   async getWithRevisions(caseId: string): Promise<{ releaseCase: ReleaseCase; revisions: CaseRevision[] }> {
     const { data: rc, error: rcErr } = await this.supabase
       .from("release_cases")

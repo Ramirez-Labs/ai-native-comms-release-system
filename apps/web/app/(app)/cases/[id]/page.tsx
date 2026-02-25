@@ -6,6 +6,7 @@ import { ConnectSupabaseCallout } from "../../../../components/ConnectSupabaseCa
 import { isMissingSupabaseEnvError } from "../../../../lib/db/errors";
 import { ReleaseCaseRepo } from "../../../../lib/db/releaseCaseRepo";
 import { formatIsoUtc } from "../../../../lib/ui/format";
+import { CaseActions } from "./CaseActions";
 
 function shortId(id: string) {
   return id.length > 12 ? `${id.slice(0, 8)}…${id.slice(-4)}` : id;
@@ -55,6 +56,12 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
   const latest = revisions[0];
   const evalSummary = latest?.evaluation ?? releaseCase.evaluation;
 
+  const repo = new ReleaseCaseRepo();
+  const existingPacket = latest
+    ? await repo.getApprovalPacketForRevision({ caseId: releaseCase.id, revisionId: latest.id })
+    : null;
+  const hasApprovalPacket = !!existingPacket;
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -66,9 +73,7 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
             <Link href="/queue" className="btn btn-ghost btn-sm">
               Back
             </Link>
-            <button className="btn btn-primary btn-sm" disabled>
-              Publish
-            </button>
+            <span className="badge badge-outline">Status: {releaseCase.status}</span>
           </>
         }
       />
@@ -246,6 +251,13 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
               </div>
             </div>
           </div>
+
+          <CaseActions
+            caseId={releaseCase.id}
+            status={releaseCase.status}
+            decision={latest?.evaluation.decision}
+            hasApprovalPacket={hasApprovalPacket}
+          />
         </div>
       </div>
     </div>

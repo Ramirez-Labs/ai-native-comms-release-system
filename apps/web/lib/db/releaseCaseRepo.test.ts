@@ -233,4 +233,40 @@ describe("ReleaseCaseRepo", () => {
     expect(fake.__calls.some((c) => c.op === "from" && c.table === "approval_packets")).toBe(true);
     expect(fake.__calls.some((c) => c.op === "insert")).toBe(true);
   });
+
+  it("updates case status", async () => {
+    const fake = makeFakeSupabase();
+    const repo = new ReleaseCaseRepo(fake as unknown as SupabaseClient);
+
+    await repo.setCaseStatus({ caseId: "case-1", status: "approved" });
+
+    expect(fake.__calls.some((c) => c.op === "from" && c.table === "release_cases")).toBe(true);
+    expect(fake.__calls.some((c) => c.op === "update")).toBe(true);
+    expect(fake.__calls.some((c) => c.op === "eq" && c.column === "id")).toBe(true);
+  });
+
+  it("writes approval signoff fields", async () => {
+    const fake = makeFakeSupabase();
+    const repo = new ReleaseCaseRepo(fake as unknown as SupabaseClient);
+
+    await repo.setApprovalPacketSignoff({
+      packetId: "pkt-1",
+      approverName: "Jane",
+      approverEmail: "jane@example.com",
+      overrideReason: "OK for demo",
+      signedAt: "2026-01-01T00:00:00.000Z",
+    });
+
+    expect(fake.__calls.some((c) => c.op === "from" && c.table === "approval_packets")).toBe(true);
+    const updateCall = fake.__calls.find((c) => c.op === "update");
+    expect(updateCall && "payload" in updateCall).toBe(true);
+
+    const payload = (updateCall as { payload: unknown }).payload as {
+      approver_name?: unknown;
+      override_reason?: unknown;
+    };
+
+    expect(payload.approver_name).toBe("Jane");
+    expect(payload.override_reason).toBe("OK for demo");
+  });
 });
