@@ -126,33 +126,69 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
               <p className="text-sm text-base-content/70 mt-1">Rules that fired, with sentence-level citations.</p>
 
               {latest?.evaluation.violations?.length ? (
-                <div className="mt-4 space-y-3">
-                  {latest.evaluation.violations.map((v, idx) => {
-                    const suggestion = latest.evaluation.rewriteSuggestions?.find(
-                      (s) => s.citation.start === v.citation.start && s.citation.end === v.citation.end
-                    );
+                (() => {
+                  const violations = latest.evaluation.violations;
+                  const allSuggestions = latest.evaluation.rewriteSuggestions ?? [];
 
-                    return (
-                      <div key={`${v.ruleId}-${idx}`} className="rounded-xl border border-base-300 p-4">
-                        <div className="flex items-center justify-between gap-3">
-                          <div className="text-sm font-semibold">{v.message}</div>
-                          <span className="badge badge-outline">{v.ruleId}</span>
-                        </div>
-                        <div className="mt-2 text-xs text-base-content/60">
-                          <span className="font-semibold">Citation:</span> {v.citation.snippet}
-                        </div>
+                  const keyForCitation = (c: { start: number; end: number }) => `${c.start}:${c.end}`;
 
-                        {suggestion ? (
-                          <div className="mt-4 rounded-xl border border-base-300 bg-base-200/40 p-3">
-                            <div className="text-xs font-semibold text-base-content/70">Suggested rewrite</div>
-                            <div className="mt-2 text-sm whitespace-pre-wrap">{suggestion.suggestedText}</div>
-                            <div className="mt-2 text-xs text-base-content/60">{suggestion.rationale}</div>
+                  const violationKeys = new Set<string>(violations.map((v) => keyForCitation(v.citation)));
+                  const suggestionsByKey = new Map<string, (typeof allSuggestions)[number]>();
+
+                  for (const s of allSuggestions) {
+                    suggestionsByKey.set(keyForCitation(s.citation), s);
+                  }
+
+                  const unmatchedSuggestions = allSuggestions.filter(
+                    (s) => !violationKeys.has(keyForCitation(s.citation))
+                  );
+
+                  return (
+                    <div className="mt-4 space-y-3">
+                      {violations.map((v, idx) => {
+                        const suggestion = suggestionsByKey.get(keyForCitation(v.citation));
+
+                        return (
+                          <div key={`${v.ruleId}-${idx}`} className="rounded-xl border border-base-300 p-4">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="text-sm font-semibold">{v.message}</div>
+                              <span className="badge badge-outline">{v.ruleId}</span>
+                            </div>
+                            <div className="mt-2 text-xs text-base-content/60">
+                              <span className="font-semibold">Citation:</span> {v.citation.snippet}
+                            </div>
+
+                            {suggestion ? (
+                              <div className="mt-4 rounded-xl border border-base-300 bg-base-200/40 p-3">
+                                <div className="text-xs font-semibold text-base-content/70">Suggested rewrite</div>
+                                <div className="mt-2 text-sm whitespace-pre-wrap">{suggestion.suggestedText}</div>
+                                <div className="mt-2 text-xs text-base-content/60">{suggestion.rationale}</div>
+                              </div>
+                            ) : null}
                           </div>
-                        ) : null}
-                      </div>
-                    );
-                  })}
-                </div>
+                        );
+                      })}
+
+                      {unmatchedSuggestions.length ? (
+                        <div className="rounded-xl border border-base-300 bg-base-200/30 p-4">
+                          <div className="text-sm font-semibold">General suggestions</div>
+                          <div className="text-sm text-base-content/70 mt-1">
+                            These suggestions didn’t map cleanly to a specific violation citation, but may still help.
+                          </div>
+                          <div className="mt-4 space-y-3">
+                            {unmatchedSuggestions.map((s, i) => (
+                              <div key={i} className="rounded-xl border border-base-300 bg-base-100 p-4">
+                                <div className="text-xs font-semibold text-base-content/70">Suggested rewrite</div>
+                                <div className="mt-2 text-sm whitespace-pre-wrap">{s.suggestedText}</div>
+                                <div className="mt-2 text-xs text-base-content/60">{s.rationale}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })()
               ) : (
                 <div className="mt-4 rounded-xl bg-base-200/60 border border-base-300 p-4 text-sm text-base-content/70">
                   No violations recorded.
