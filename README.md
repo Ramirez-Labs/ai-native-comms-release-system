@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). CI merged ✅ (Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -57,9 +57,11 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] GitHub Action to auto-apply migrations on `main` (`.github/workflows/supabase-migrations.yml`)
 
 ### PR7 — Wire UI to real data (Queue + Case Detail)
-- [ ] Queue shows cases by decision/state (pass/needs_changes/escalate)
-- [ ] Case detail shows: decision, violations, citations, required disclosures
-- [ ] Manual test steps in PR description
+- [x] Queue shows cases by decision/state (pass/needs_changes/escalate)
+- [x] Case detail shows: decision, violations, citations, required disclosures
+- [x] New submission creates a case + revision and redirects to the case detail (demo fixtures included)
+- [x] Missing env vars render a friendly “Connect Supabase” callout (demo-safe)
+- [x] Manual test steps documented in PR description + `docs/ui/pr7-wire-ui-real-data.md`
 
 ### PR8 — Constrained LLM step (strict JSON) + rewrite suggestions
 - [ ] LLM outputs strict JSON: claim extraction + rewrite suggestions
