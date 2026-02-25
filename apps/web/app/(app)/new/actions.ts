@@ -8,6 +8,8 @@ import { loadGenericPolicyPackV01 } from "../../../lib/policy/loadPolicyPack";
 import { evaluateDeterministicRules } from "../../../lib/policy/ruleEngine";
 import { routeFromRuleEngine, toEvaluation } from "../../../lib/decision/routing";
 import { ReleaseCaseRepo } from "../../../lib/db/releaseCaseRepo";
+import { getRewriteSuggestionsViaOpenAi } from "../../../lib/llm/openai";
+import { normalizeRewriteSuggestions } from "../../../lib/llm/llmTypes";
 
 export type CreateCaseState =
   | { ok: true }
@@ -45,7 +47,37 @@ export async function createCaseAction(
   const policy = loadGenericPolicyPackV01();
   const ruleResult = evaluateDeterministicRules(submission, policy);
   const routing = routeFromRuleEngine(ruleResult);
-  const evaluation = toEvaluation(ruleResult, nowIso(), routing);
+
+  // PR8: LLM rewrite suggestions (best-effort; never overrides deterministic decision).
+  let rewriteSuggestions: ReturnType<typeof normalizeRewriteSuggestions> = [];
+  const openAiKey = process.env.OPENAI_API_KEY;
+
+  if (openAiKey) {
+    try {
+      const llm = await getRewriteSuggestionsViaOpenAi(
+        {
+          draft: submission.text,
+          violations: ruleResult.violations.map((v) => ({
+            ruleId: v.ruleId,
+            message: v.message,
+            citation: v.citation,
+          })),
+          requiredDisclosures: ruleResult.requiredDisclosures,
+        },
+        { apiKey: openAiKey, model: process.env.OPENAI_MODEL, timeoutMs: 12000 }
+      );
+
+      rewriteSuggestions = normalizeRewriteSuggestions(llm);
+    } catch {
+      // Demo reliability: ignore LLM failures and continue (no suggestions).
+      rewriteSuggestions = [];
+    }
+  }
+
+  const evaluation = {
+    ...toEvaluation(ruleResult, nowIso(), routing),
+    rewriteSuggestions,
+  };
 
   try {
     const repo = new ReleaseCaseRepo();

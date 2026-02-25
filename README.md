@@ -63,11 +63,12 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Missing env vars render a friendly “Connect Supabase” callout (demo-safe)
 - [x] Manual test steps documented in PR description + `docs/ui/pr7-wire-ui-real-data.md`
 
-### PR8 — Constrained LLM step (strict JSON) + rewrite suggestions
-- [ ] LLM outputs strict JSON: claim extraction + rewrite suggestions
-- [ ] Schema validation (fail closed → abstain/escalate)
+### PR8 — Constrained LLM step (strict-ish JSON) + rewrite suggestions
+- [ ] OpenAI call generates rewrite suggestions (best-effort; demo-focused)
+- [ ] Response normalization + schema validation (avoid demo breakage)
 - [ ] Ensure deterministic high-severity rules cannot be overridden by LLM output
-- [ ] Tests with mocked LLM responses
+- [ ] Tests with mocked OpenAI responses
+- [ ] Docs: `docs/openai/README.md`
 
 ### PR9 — Approval packet generator + export
 - [ ] Generate approval packet (JSON + readable summary)
