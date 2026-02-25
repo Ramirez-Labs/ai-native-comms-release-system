@@ -51,7 +51,7 @@ export async function getRewriteSuggestionsViaOpenAi(
   const timeout = setTimeout(() => controller.abort(), config.timeoutMs ?? 12000);
 
   const system =
-    "You are a careful compliance writing assistant. You rewrite marketing copy to reduce compliance risk while preserving intent.";
+    "You are a careful compliance writing assistant. You rewrite marketing copy to reduce compliance risk while preserving intent. You must follow output format requirements exactly.";
 
   const user = {
     draft: input.draft,
@@ -60,12 +60,16 @@ export async function getRewriteSuggestionsViaOpenAi(
     instructions: {
       output: {
         claims: "Extract key claims from the draft. Keep them short.",
-        rewriteSuggestions:
-          "Return rewriteSuggestions with citation offsets/snippets (use provided citations), suggestedText, and rationale.",
+        rewriteSuggestions: [
+          "Return rewriteSuggestions with citation offsets/snippets, suggestedText, and rationale.",
+          "IMPORTANT: For each suggestion.citation, copy one of the provided violation citations EXACTLY (same sentenceIndex/start/end/snippet).",
+          "Return at most 1 rewriteSuggestion per violation. If you cannot suggest a safe rewrite, omit it.",
+        ].join(" "),
       },
       constraints: [
         "Do not remove required disclosures; suggest where to add them if missing.",
         "Keep suggestedText concise and ready to paste.",
+        "Keep rationale to 1 short sentence.",
         "If there are no violations, return empty rewriteSuggestions.",
       ],
     },
@@ -80,6 +84,7 @@ export async function getRewriteSuggestionsViaOpenAi(
       },
       body: JSON.stringify({
         model,
+        temperature: 0,
         input: [
           { role: "system", content: system },
           { role: "user", content: JSON.stringify(user) },
