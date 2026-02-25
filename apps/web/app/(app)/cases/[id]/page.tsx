@@ -78,8 +78,8 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
         }
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+        <div className="space-y-6">
           <div className="card bg-base-100 border border-base-300">
             <div className="card-body">
               <div className="flex items-center justify-between gap-4">
@@ -155,9 +155,9 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
 
                         return (
                           <div key={`${v.ruleId}-${idx}`} className="rounded-xl border border-base-300 p-4">
-                            <div className="flex items-center justify-between gap-3">
-                              <div className="text-sm font-semibold">{v.message}</div>
-                              <span className="badge badge-outline">{v.ruleId}</span>
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="text-sm font-semibold pr-2">{v.message}</div>
+                              <span className="badge badge-outline shrink-0">{v.ruleId}</span>
                             </div>
                             <div className="mt-2 text-xs text-base-content/60">
                               <span className="font-semibold">Citation:</span> {v.citation.snippet}
@@ -203,7 +203,7 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 lg:sticky lg:top-6 self-start">
           <div className="card bg-base-100 border border-base-300">
             <div className="card-body">
               <h2 className="text-base font-semibold">Revisions</h2>
@@ -237,11 +237,11 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
               </p>
 
               {latest ? (
-                <a className="btn btn-outline btn-sm mt-4" href={`/api/cases/${releaseCase.id}/approval-packet`}>
+                <a className="btn btn-outline btn-sm mt-4 w-full" href={`/api/cases/${releaseCase.id}/approval-packet`}>
                   Export JSON
                 </a>
               ) : (
-                <button className="btn btn-outline btn-sm mt-4" disabled>
+                <button className="btn btn-outline btn-sm mt-4 w-full" disabled>
                   Export JSON
                 </button>
               )}

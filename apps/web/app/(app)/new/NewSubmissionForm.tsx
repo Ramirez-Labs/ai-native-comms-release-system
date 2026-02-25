@@ -41,7 +41,7 @@ export function NewSubmissionForm() {
                 <span className="label-text">Demo draft</span>
               </div>
               <select
-                className="select select-bordered"
+                className="select select-bordered w-full"
                 value={selectedDemo}
                 onChange={(e) => setSelectedDemo(e.target.value)}
               >
@@ -55,7 +55,7 @@ export function NewSubmissionForm() {
               <div className="label">
                 <span className="label-text">Channel</span>
               </div>
-              <select className="select select-bordered" name="channel" defaultValue="email">
+              <select className="select select-bordered w-full" name="channel" defaultValue="email">
                 <option value="email">Email</option>
                 <option value="push">Push</option>
                 <option value="landing_page">Landing page</option>
@@ -67,14 +67,14 @@ export function NewSubmissionForm() {
               <div className="label">
                 <span className="label-text">Product</span>
               </div>
-              <input className="input input-bordered" name="product" placeholder="e.g. Cash account" />
+              <input className="input input-bordered w-full" name="product" placeholder="e.g. Cash account" />
             </label>
 
             <label className="form-control">
               <div className="label">
                 <span className="label-text">Audience</span>
               </div>
-              <input className="input input-bordered" name="audience" placeholder="e.g. New users" />
+              <input className="input input-bordered w-full" name="audience" placeholder="e.g. New users" />
             </label>
           </div>
 
@@ -84,14 +84,14 @@ export function NewSubmissionForm() {
               <span className="label-text-alt text-base-content/60">Paste the full copy to review.</span>
             </div>
             <textarea
-              className="textarea textarea-bordered min-h-[220px] font-mono text-[13px] leading-5"
+              className="textarea textarea-bordered w-full min-h-[260px] font-mono text-[13px] leading-5"
               name="draft"
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
             />
           </label>
 
-          <div className="flex items-center justify-end gap-2">
+          <div className="flex items-center justify-end gap-2 pt-2">
             <button className="btn btn-primary" type="submit" disabled={pending}>
               {pending ? "Submitting…" : "Submit for review"}
             </button>
