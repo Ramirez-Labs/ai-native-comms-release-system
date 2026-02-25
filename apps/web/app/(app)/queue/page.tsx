@@ -7,6 +7,7 @@ import { PageHeader } from "../../../components/PageHeader";
 import { EmptyStateCard } from "../../../components/EmptyStateCard";
 import { ConnectSupabaseCallout } from "../../../components/ConnectSupabaseCallout";
 import { DecisionBadge } from "../../../components/DecisionBadge";
+import { formatIsoUtc } from "../../../lib/ui/format";
 
 function decisionTabs(selected?: Decision) {
   const tabs: Array<{ label: string; decision?: Decision; href: string }> = [
@@ -139,7 +140,7 @@ export default async function QueuePage({
 
                     <div className="text-right shrink-0">
                       <div className="text-xs text-base-content/60">Updated</div>
-                      <div className="text-xs font-medium">{new Date(c.updatedAt).toLocaleString()}</div>
+                      <div className="text-xs font-medium">{formatIsoUtc(c.updatedAt)}</div>
                     </div>
                   </div>
                 </Link>

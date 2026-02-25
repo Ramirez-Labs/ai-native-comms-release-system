@@ -5,6 +5,7 @@ import { PageHeader } from "../../../../components/PageHeader";
 import { ConnectSupabaseCallout } from "../../../../components/ConnectSupabaseCallout";
 import { isMissingSupabaseEnvError } from "../../../../lib/db/errors";
 import { ReleaseCaseRepo } from "../../../../lib/db/releaseCaseRepo";
+import { formatIsoUtc } from "../../../../lib/ui/format";
 
 function shortId(id: string) {
   return id.length > 12 ? `${id.slice(0, 8)}…${id.slice(-4)}` : id;
@@ -159,7 +160,7 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
                     <li key={r.id} className="rounded-xl border border-base-300 p-3">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-xs font-semibold">{shortId(r.id)}</span>
-                        <span className="text-xs text-base-content/60">{new Date(r.createdAt).toLocaleString()}</span>
+                        <span className="text-xs text-base-content/60">{formatIsoUtc(r.createdAt)}</span>
                       </div>
                       <div className="mt-2">
                         <DecisionBadge decision={r.evaluation.decision} severity={r.evaluation.severity} />

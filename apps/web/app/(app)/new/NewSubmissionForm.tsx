@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useActionState } from "react";
 
 import { createCaseAction, type CreateCaseState } from "./actions";
@@ -11,6 +11,7 @@ const INITIAL: CreateCaseState = { ok: true };
 export function NewSubmissionForm() {
   const [state, formAction, pending] = useActionState(createCaseAction, INITIAL);
   const [selectedDemo, setSelectedDemo] = useState<string>("autoPass");
+  const [draft, setDraft] = useState<string>(fixtureDrafts.autoPass.text);
 
   const demoText = useMemo(() => {
     if (selectedDemo === "autoPass") return fixtureDrafts.autoPass.text;
@@ -18,6 +19,11 @@ export function NewSubmissionForm() {
     if (selectedDemo === "escalate") return fixtureDrafts.escalate.text;
     return fixtureDrafts.autoPass.text;
   }, [selectedDemo]);
+
+  useEffect(() => {
+    // Make the demo dropdown actually update the textarea (defaultValue only applies on first render).
+    setDraft(demoText);
+  }, [demoText]);
 
   return (
     <div className="card bg-base-100 border border-base-300">
@@ -80,7 +86,8 @@ export function NewSubmissionForm() {
             <textarea
               className="textarea textarea-bordered min-h-[220px] font-mono text-[13px] leading-5"
               name="draft"
-              defaultValue={demoText}
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
             />
           </label>
 
