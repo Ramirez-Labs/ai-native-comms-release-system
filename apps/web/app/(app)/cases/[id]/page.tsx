@@ -127,17 +127,31 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
 
               {latest?.evaluation.violations?.length ? (
                 <div className="mt-4 space-y-3">
-                  {latest.evaluation.violations.map((v, idx) => (
-                    <div key={`${v.ruleId}-${idx}`} className="rounded-xl border border-base-300 p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-sm font-semibold">{v.message}</div>
-                        <span className="badge badge-outline">{v.ruleId}</span>
+                  {latest.evaluation.violations.map((v, idx) => {
+                    const suggestion = latest.evaluation.rewriteSuggestions?.find(
+                      (s) => s.citation.start === v.citation.start && s.citation.end === v.citation.end
+                    );
+
+                    return (
+                      <div key={`${v.ruleId}-${idx}`} className="rounded-xl border border-base-300 p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="text-sm font-semibold">{v.message}</div>
+                          <span className="badge badge-outline">{v.ruleId}</span>
+                        </div>
+                        <div className="mt-2 text-xs text-base-content/60">
+                          <span className="font-semibold">Citation:</span> {v.citation.snippet}
+                        </div>
+
+                        {suggestion ? (
+                          <div className="mt-4 rounded-xl border border-base-300 bg-base-200/40 p-3">
+                            <div className="text-xs font-semibold text-base-content/70">Suggested rewrite</div>
+                            <div className="mt-2 text-sm whitespace-pre-wrap">{suggestion.suggestedText}</div>
+                            <div className="mt-2 text-xs text-base-content/60">{suggestion.rationale}</div>
+                          </div>
+                        ) : null}
                       </div>
-                      <div className="mt-2 text-xs text-base-content/60">
-                        <span className="font-semibold">Citation:</span> {v.citation.snippet}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="mt-4 rounded-xl bg-base-200/60 border border-base-300 p-4 text-sm text-base-content/70">
