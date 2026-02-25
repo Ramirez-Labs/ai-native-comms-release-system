@@ -43,7 +43,7 @@ export class ReleaseCaseRepo {
         created_at: ts,
         updated_at: ts,
       })
-      .select()
+      .select("id, created_at, updated_at, status, channel, product, audience, draft_text")
       .single();
 
     if (error) throw error;
