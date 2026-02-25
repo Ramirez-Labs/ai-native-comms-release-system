@@ -11,7 +11,8 @@ type Call =
   | { op: "select"; args: unknown[] }
   | { op: "eq"; column: string; value: unknown }
   | { op: "order"; column: string }
-  | { op: "limit"; n: number };
+  | { op: "limit"; n: number }
+  | { op: "maybeSingle" };
 
 type ChainResult = { data: unknown; error: unknown };
 
@@ -20,6 +21,7 @@ type FakeChain = {
   update: (payload: unknown) => FakeChain;
   select: (...args: unknown[]) => FakeChain;
   single: () => Promise<ChainResult>;
+  maybeSingle: () => Promise<ChainResult>;
   eq: (column: string, value: unknown) => FakeChain;
   order: (column: string, opts?: unknown) => FakeChain;
   limit: (n: number) => FakeChain;
@@ -31,7 +33,7 @@ type FakeSupabase = {
   __calls: Call[];
 };
 
-function makeFakeSupabase(overrides?: { single?: unknown; many?: unknown }): FakeSupabase {
+function makeFakeSupabase(overrides?: { single?: unknown; many?: unknown; packet?: unknown }): FakeSupabase {
   const calls: Call[] = [];
 
   const baseSingle: ChainResult = {
@@ -72,6 +74,10 @@ function makeFakeSupabase(overrides?: { single?: unknown; many?: unknown }): Fak
         return chain(result);
       },
       single: async () => ({ ...result, data: overrides?.single ?? baseSingle.data }),
+      maybeSingle: async () => {
+        calls.push({ op: "maybeSingle" });
+        return { ...result, data: overrides?.packet ?? null };
+      },
       eq: (column: string, value: unknown) => {
         calls.push({ op: "eq", column, value });
         return chain(result);
@@ -198,5 +204,33 @@ describe("ReleaseCaseRepo", () => {
       .map((c) => (c as { table: string }).table);
 
     expect(fromTables).toEqual(expect.arrayContaining(["release_cases", "case_revisions"]));
+  });
+
+  it("creates and loads approval packets", async () => {
+    const fake = makeFakeSupabase({
+      packet: {
+        id: "pkt-1",
+        created_at: "2026-01-03T00:00:00.000Z",
+        packet_json: { hello: "world" },
+      },
+    });
+
+    const repo = new ReleaseCaseRepo(fake as unknown as SupabaseClient);
+
+    const res = await repo.getApprovalPacketForRevision({ caseId: "case-1", revisionId: "rev-1" });
+    expect(res?.id).toBe("pkt-1");
+
+    const created = await repo.createApprovalPacket({
+      caseId: "case-1",
+      revisionId: "rev-1",
+      policyVersion: "generic.v0.1",
+      decision: "pass",
+      severity: "low",
+      packetJson: { ok: true },
+    });
+
+    expect(created.id).toBeTruthy();
+    expect(fake.__calls.some((c) => c.op === "from" && c.table === "approval_packets")).toBe(true);
+    expect(fake.__calls.some((c) => c.op === "insert")).toBe(true);
   });
 });

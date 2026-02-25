@@ -41,6 +41,54 @@ export class ReleaseCaseRepo {
     this.supabase = supabaseClient ?? getSupabaseClient();
   }
 
+  async getApprovalPacketForRevision(input: { caseId: string; revisionId: string }): Promise<
+    | {
+        id: string;
+        packetJson: unknown;
+        createdAt: string;
+      }
+    | null
+  > {
+    const { data, error } = await this.supabase
+      .from("approval_packets")
+      .select("id, packet_json, created_at")
+      .eq("case_id", input.caseId)
+      .eq("revision_id", input.revisionId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) return null;
+
+    return { id: data.id, packetJson: data.packet_json, createdAt: data.created_at };
+  }
+
+  async createApprovalPacket(input: {
+    caseId: string;
+    revisionId: string;
+    policyVersion: string;
+    decision: string;
+    severity: string;
+    packetJson: unknown;
+  }): Promise<{ id: string }> {
+    const { data, error } = await this.supabase
+      .from("approval_packets")
+      .insert({
+        case_id: input.caseId,
+        revision_id: input.revisionId,
+        policy_version: input.policyVersion,
+        decision: input.decision,
+        severity: input.severity,
+        packet_json: input.packetJson,
+      })
+      .select("id")
+      .single();
+
+    if (error) throw error;
+    return { id: data.id };
+  }
+
   async list(input: ListReleaseCasesInput = {}): Promise<ReleaseCase[]> {
     const limit = input.limit ?? 50;
 
