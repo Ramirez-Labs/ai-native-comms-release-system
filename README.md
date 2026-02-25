@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). PR8 merged ✅ (OpenAI rewrite suggestions + normalization; demo-safe fallbacks). PR9 merged ✅ (Approval packet export + persistence). PR10 merged ✅ (Publish gate + escalation sign-off). CI merged ✅ (Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). PR8 merged ✅ (OpenAI rewrite suggestions + normalization; demo-safe fallbacks). PR9 merged ✅ (Approval packet export + persistence). PR10 merged ✅ (Publish gate + escalation sign-off). PR11 merged ✅ (Demo hardening). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -90,9 +90,10 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Docs: `docs/ui/pr10-publish-gate-signoff.md`
 
 ### PR11 — Demo hardening (video-ready)
-- [ ] One-click load of 3 canonical demo scenarios
-- [ ] Copy polish to match one-pager language (“Release Case”, “Approval Packet”, etc.)
-- [ ] Add `/docs/demo-script.md` and `/docs/writeup-500-words.md` outlines
+- [x] One-click load of 3 canonical demo scenarios (Queue → Load demo cases)
+- [x] Copy polish and demo-friendly UX
+- [x] Add `/docs/demo-script.md`
+- [x] Add `/docs/writeup-500-words.md`
 
 ## CI
 GitHub Actions runs `lint`, `test`, and `build` for the web app on every PR and on pushes to `main`.
