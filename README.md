@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). PR8 merged ✅ (OpenAI rewrite suggestions + normalization; demo-safe fallbacks). PR9 merged ✅ (Approval packet export + persistence). CI merged ✅ (Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). PR7 merged ✅ (UI wired to real Supabase data; demo flow works). PR8 merged ✅ (OpenAI rewrite suggestions + normalization; demo-safe fallbacks). PR9 merged ✅ (Approval packet export + persistence). PR10 merged ✅ (Publish gate + escalation sign-off). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -81,9 +81,13 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Docs: `docs/ui/pr9-approval-packet-export.md`
 
 ### PR10 — Hard publish gate + human sign-off
-- [ ] Publish action blocked unless approved state
-- [ ] Human sign-off required for escalations (name/timestamp + override reason)
-- [ ] End-to-end flows: auto-pass→publish; escalate→sign→publish
+- [x] Publish action blocked unless approved state
+- [x] Approve action (API) updates case status to `approved`
+- [x] Escalations require human sign-off (approver name + override reason; stored on approval packet)
+- [x] Publish action (API) updates case status to `published`
+- [x] Demo-friendly UI on case detail (Approve/Publish with clear disabled reasons)
+- [x] Unit tests for gating logic + repo update calls
+- [x] Docs: `docs/ui/pr10-publish-gate-signoff.md`
 
 ### PR11 — Demo hardening (video-ready)
 - [ ] One-click load of 3 canonical demo scenarios
