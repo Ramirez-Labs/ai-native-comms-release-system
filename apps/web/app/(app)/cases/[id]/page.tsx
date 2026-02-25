@@ -227,10 +227,23 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
           <div className="card bg-base-100 border border-base-300">
             <div className="card-body">
               <h2 className="text-base font-semibold">Approval packet</h2>
-              <p className="text-sm text-base-content/70 mt-1">Export comes in PR9. This view focuses on decision + evidence.</p>
-              <button className="btn btn-outline btn-sm mt-4" disabled>
-                Export
-              </button>
+              <p className="text-sm text-base-content/70 mt-1">
+                Download a JSON artifact containing the verdict, evidence, and revision history.
+              </p>
+
+              {latest ? (
+                <a className="btn btn-outline btn-sm mt-4" href={`/api/cases/${releaseCase.id}/approval-packet`}>
+                  Export JSON
+                </a>
+              ) : (
+                <button className="btn btn-outline btn-sm mt-4" disabled>
+                  Export JSON
+                </button>
+              )}
+
+              <div className="mt-3 text-xs text-base-content/60">
+                Demo note: export is idempotent per revision and is stored in the database.
+              </div>
             </div>
           </div>
         </div>
