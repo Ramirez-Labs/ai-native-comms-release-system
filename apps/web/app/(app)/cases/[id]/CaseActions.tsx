@@ -113,13 +113,13 @@ export function CaseActions(props: {
                   onChange={(e) => setApproverName(e.target.value)}
                 />
                 <input
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                   placeholder="Approver email (optional)"
                   value={approverEmail}
                   onChange={(e) => setApproverEmail(e.target.value)}
                 />
                 <textarea
-                  className="textarea textarea-bordered min-h-[96px]"
+                  className="textarea textarea-bordered w-full min-h-[96px]"
                   placeholder="Override reason (required for escalations)"
                   value={overrideReason}
                   onChange={(e) => setOverrideReason(e.target.value)}
@@ -128,9 +128,9 @@ export function CaseActions(props: {
             </div>
           ) : null}
 
-          <div className="mt-4 flex items-center justify-end gap-2">
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
             <button
-              className="btn btn-outline btn-sm"
+              className="btn btn-outline btn-sm w-full sm:w-auto"
               disabled={!!approveDisabledReason || busy === "approve"}
               onClick={doApprove}
               title={approveDisabledReason ?? undefined}
@@ -139,7 +139,7 @@ export function CaseActions(props: {
             </button>
 
             <button
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm w-full sm:w-auto"
               disabled={!publishGate.ok || busy === "publish"}
               onClick={doPublish}
               title={!publishGate.ok ? publishGate.reason : undefined}
