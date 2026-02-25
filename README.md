@@ -11,7 +11,7 @@ North star: [`one-pager.md`](./one-pager.md)
 
 ## PR plan (checklist)
 
-**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). CI merged ✅ (Actions runs lint/test/build on PRs + main).
+**Progress:** PR1 merged ✅ (UI shell). PR2 merged ✅ (domain model + fixtures + unit tests). PR3 merged ✅ (policy pack v0.1 + deterministic rule engine). PR4 merged ✅ (sentence-level citation mapping). PR5 merged ✅ (routing decision engine). PR6 merged ✅ (Supabase schema + persistence + migrations workflow). CI merged ✅ (Actions runs lint/test/build on PRs + main).
 
 We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - stay narrowly scoped
@@ -47,13 +47,14 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Unit tests for routing outcomes across fixtures
 
 ### PR6 — Supabase schema + persistence (no auth/RLS)
-- [ ] Supabase project config notes for local/dev
-- [ ] Database schema + migrations for:
-  - [ ] `release_cases`
-  - [ ] `case_revisions`
-  - [ ] `approval_packets`
-- [ ] Minimal DB access layer (create/load/update)
-- [ ] Tests for persistence layer (can be mocked/unit-level if integration is heavy)
+- [x] Supabase project config notes for local/dev (`docs/supabase/README.md`)
+- [x] Database schema + migrations for:
+  - [x] `release_cases`
+  - [x] `case_revisions`
+  - [x] `approval_packets`
+- [x] Minimal DB access layer (create/append revision)
+- [x] Unit tests for persistence layer (mocked Supabase client)
+- [x] GitHub Action to auto-apply migrations on `main` (`.github/workflows/supabase-migrations.yml`)
 
 ### PR7 — Wire UI to real data (Queue + Case Detail)
 - [ ] Queue shows cases by decision/state (pass/needs_changes/escalate)
