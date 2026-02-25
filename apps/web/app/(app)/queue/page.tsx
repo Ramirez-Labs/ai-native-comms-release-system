@@ -8,6 +8,7 @@ import { EmptyStateCard } from "../../../components/EmptyStateCard";
 import { ConnectSupabaseCallout } from "../../../components/ConnectSupabaseCallout";
 import { DecisionBadge } from "../../../components/DecisionBadge";
 import { formatIsoUtc } from "../../../lib/ui/format";
+import { DemoLoader } from "./DemoLoader";
 
 function decisionTabs(selected?: Decision) {
   const tabs: Array<{ label: string; decision?: Decision; href: string }> = [
@@ -93,6 +94,8 @@ export default async function QueuePage({
         {decisionTabs(decision)}
         <div className="text-xs text-base-content/60">Sorted by most recently updated</div>
       </div>
+
+      <DemoLoader />
 
       {cases.length === 0 ? (
         <EmptyStateCard
