@@ -76,10 +76,24 @@ export async function createCaseAction(
       );
 
       rewriteSuggestions = normalizeRewriteSuggestions(llm);
-    } catch {
+
+      if (process.env.DEBUG_OPENAI === "true") {
+        console.log(
+          `[openai] rewriteSuggestions: ${rewriteSuggestions.length} suggestions (model=${process.env.OPENAI_MODEL ?? "gpt-4o-mini"})`
+        );
+      }
+    } catch (err) {
       // Demo reliability: ignore LLM failures and continue (no suggestions).
+      if (process.env.DEBUG_OPENAI === "true") {
+        console.warn(
+          `[openai] rewriteSuggestions failed (model=${process.env.OPENAI_MODEL ?? "gpt-4o-mini"}):`,
+          err
+        );
+      }
       rewriteSuggestions = [];
     }
+  } else if (process.env.DEBUG_OPENAI === "true") {
+    console.log("[openai] rewriteSuggestions skipped: OPENAI_API_KEY not set");
   }
 
   const evaluation = {
