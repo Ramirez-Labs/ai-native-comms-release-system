@@ -86,9 +86,9 @@ export function CaseActions(props: {
 
       <div className="card bg-base-100 border border-base-300">
         <div className="card-body">
-          <h2 className="text-base font-semibold">Publish gate</h2>
+          <h2 className="text-base font-semibold">Approval & publish</h2>
           <p className="text-sm text-base-content/70 mt-1">
-            Publishing is blocked unless this case is approved.
+            Approval is required before publishing. Escalations require a named sign-off.
           </p>
 
           <div className="mt-4 grid grid-cols-1 gap-3">
@@ -150,7 +150,7 @@ export function CaseActions(props: {
 
           {!props.hasApprovalPacket ? (
             <div className="mt-3 text-xs text-base-content/60">
-              You’ll need to export an approval packet before approving so the sign-off can be recorded.
+              Step 1: Export an approval packet (stores an audit artifact). Then you can approve.
             </div>
           ) : null}
         </div>
