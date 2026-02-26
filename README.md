@@ -101,7 +101,7 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 
 The current prototype is demo-ready, but it doesn’t yet fully satisfy the brief:
 - human role isn’t consistently explicit in the UI
-- the system doesn’t yet support many people/tenants
+- the system doesn’t yet handle much more complexity (more policies, more channels, more edge cases)
 - reliability at scale (jobs/retries/monitoring) isn’t built
 
 Below is the next PR sequence to close those gaps.
@@ -133,21 +133,14 @@ Below is the next PR sequence to close those gaps.
 - [ ] “Policy version used” surfaced in UI and exported packet
 - [ ] Guardrail tests: fixtures + golden cases remain stable across policy updates
 
-### PR15 — Multi-tenant + auth (Supabase RLS)
-**Goal:** “serve far more people” safely.
-- [ ] Auth (Supabase)
-- [ ] Tenant model (orgs/projects) + RLS policies
-- [ ] Data scoping for cases/revisions/packets
-- [ ] Minimal role model: reviewer vs approver
-
-### PR16 — Scale reliability (background jobs + retries)
+### PR15 — Scale reliability (background jobs + retries)
 **Goal:** make AI + persistence reliable under load.
 - [ ] Move analysis and packet generation to background job queue
 - [ ] Retry strategy for OpenAI timeouts/rate limits
 - [ ] Idempotency keys for revision creation + packet generation
 - [ ] Basic observability: job status, last error, timing
 
-### PR17 — Explicit human-critical decision (product + audit)
+### PR16 — Explicit human-critical decision (product + audit)
 **Goal:** explicitly name and enforce the one decision that must remain human.
 - [ ] In-product copy: “Escalation override must remain human” + rationale
 - [ ] Require sign-off on escalations (already enforced) + show it prominently in packet UI
