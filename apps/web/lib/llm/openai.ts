@@ -59,7 +59,7 @@ export async function getRewriteSuggestionsViaOpenAi(
     requiredDisclosures: input.requiredDisclosures,
     instructions: {
       output: {
-        claims: "Extract key claims from the draft. Keep them short.",
+        claims: "Extract key claims from the draft. Keep them short. Each claim should be an object with a single `text` field.",
         rewriteSuggestions: [
           "Return rewriteSuggestions with citation offsets/snippets, suggestedText, and rationale.",
           "IMPORTANT: For each suggestion.citation, copy one of the provided violation citations EXACTLY (same sentenceIndex/start/end/snippet).",
@@ -107,7 +107,6 @@ export async function getRewriteSuggestionsViaOpenAi(
                     additionalProperties: false,
                     properties: {
                       text: { type: "string" },
-                      kind: { type: "string", enum: ["factual", "marketing", "legal"] },
                     },
                     required: ["text"],
                   },
