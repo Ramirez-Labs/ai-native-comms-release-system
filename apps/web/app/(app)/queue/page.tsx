@@ -82,15 +82,10 @@ export default async function QueuePage({
     <div className="space-y-6">
       <PageHeader
         title="Queue"
-        subtitle="Release cases routed by policy checks. The gate owns the workflow."
-        actions={
-          <Link href="/new" className="btn btn-primary btn-sm">
-            New submission
-          </Link>
-        }
+        subtitle="Review drafts, see what needs changes, and publish only after approval."
       />
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         {decisionTabs(decision)}
         <div className="text-xs text-base-content/60">Sorted by most recently updated</div>
       </div>

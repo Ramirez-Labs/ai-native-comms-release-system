@@ -67,7 +67,7 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
       <PageHeader
         eyebrow="Release case"
         title={shortId(releaseCase.id)}
-        subtitle="Verdict-first review with sentence-level citations."
+        subtitle="Review the decision, evidence, and next steps."
         actions={
           <>
             <Link href="/queue" className="btn btn-ghost btn-sm">
@@ -84,9 +84,9 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
             <div className="card-body">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-base font-semibold">Verdict</h2>
+                  <h2 className="text-base font-semibold">Decision</h2>
                   <p className="text-sm text-base-content/70 mt-1">
-                    The gate’s decision is based on deterministic policy rules.
+                    This is the recommended outcome based on the terms we checked.
                   </p>
                 </div>
                 {evalSummary ? (
@@ -127,8 +127,10 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
 
           <div className="card bg-base-100 border border-base-300">
             <div className="card-body">
-              <h2 className="text-base font-semibold">Violations</h2>
-              <p className="text-sm text-base-content/70 mt-1">Rules that fired, with sentence-level citations.</p>
+              <h2 className="text-base font-semibold">Issues to fix</h2>
+              <p className="text-sm text-base-content/70 mt-1">
+                These items explain why the draft was flagged, with citations and suggested rewrites.
+              </p>
 
               {latest?.evaluation.violations?.length ? (
                 (() => {
@@ -233,7 +235,7 @@ export default async function CaseDetailPage({ params }: { params: Promise<{ id:
             <div className="card-body">
               <h2 className="text-base font-semibold">Approval packet</h2>
               <p className="text-sm text-base-content/70 mt-1">
-                Download a JSON artifact containing the verdict, evidence, and revision history.
+                Step 1 for approvals. Generates a JSON audit artifact (stored in the database).
               </p>
 
               {latest ? (
