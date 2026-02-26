@@ -90,9 +90,10 @@ export async function getRewriteSuggestionsViaOpenAi(
           { role: "user", content: JSON.stringify(user) },
         ],
         // Prefer structured output for demo reliability.
-        response_format: {
-          type: "json_schema",
-          json_schema: {
+        // NOTE: Responses API moved `response_format` → `text.format`.
+        text: {
+          format: {
+            type: "json_schema",
             name: "rewrite_suggestions_v1",
             strict: true,
             schema: {
@@ -139,6 +140,9 @@ export async function getRewriteSuggestionsViaOpenAi(
             },
           },
         },
+        // Back-compat: some SDKs accept `response_format`; we avoid sending it to prevent 400s.
+        // response_format: undefined,
+
       }),
       signal: controller.signal,
     });
