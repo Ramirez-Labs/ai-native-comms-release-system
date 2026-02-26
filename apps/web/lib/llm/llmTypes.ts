@@ -29,7 +29,6 @@ export const LlmResponseSchema = z
         z
           .object({
             text: z.string(),
-            kind: z.enum(["factual", "marketing", "legal"]).optional(),
           })
           .strict()
       )
