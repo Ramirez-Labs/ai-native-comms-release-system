@@ -15,6 +15,14 @@ export type CreateCaseState =
   | { ok: true }
   | { ok: false; message: string };
 
+function isNextRedirectError(err: unknown): boolean {
+  // `redirect()` throws an internal NEXT_REDIRECT error in Next.js.
+  // We must not swallow it in a try/catch or the client will see a confusing error.
+  if (!err || typeof err !== "object") return false;
+  const digest = (err as { digest?: unknown })?.digest;
+  return typeof digest === "string" && digest.startsWith("NEXT_REDIRECT");
+}
+
 function toChannel(input: string): Channel {
   const v = input.toLowerCase();
   if (v === "email") return "email";
@@ -85,6 +93,7 @@ export async function createCaseAction(
     await repo.appendRevision({ caseId: rc.id, submission, evaluation });
     redirect(`/cases/${rc.id}`);
   } catch (err) {
+    if (isNextRedirectError(err)) throw err;
     return { ok: false, message: err instanceof Error ? err.message : String(err) };
   }
 }
