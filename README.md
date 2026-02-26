@@ -95,5 +95,63 @@ We’ll build this as a sequence of small, reviewable PRs. Each PR should:
 - [x] Add `/docs/demo-script.md`
 - [x] Add `/docs/writeup-500-words.md`
 
+---
+
+## Roadmap (post-PR11) — meet the “expand human capability” bar
+
+The current prototype is demo-ready, but it doesn’t yet fully satisfy the brief:
+- human role isn’t consistently explicit in the UI
+- the system doesn’t yet support many people/tenants
+- reliability at scale (jobs/retries/monitoring) isn’t built
+
+Below is the next PR sequence to close those gaps.
+
+### PR12 — Workflow clarity overhaul (UI + copy)
+**Goal:** make the product self-explanatory in <30 seconds.
+- [ ] Add a persistent “Who does what” banner:
+  - **AI recommends** (issues + suggested rewrites)
+  - **Human approves** (especially escalations)
+  - **System enforces** (publish is blocked without approval)
+- [ ] Redesign Case Detail information architecture:
+  - top: Decision + “Next step” module
+  - middle: Draft + Issues to fix + Suggested rewrites
+  - right rail: Actions only (Export → Approve → Publish)
+  - advanced details collapsed by default
+- [ ] Remove duplicate CTAs + make one primary action per screen
+- [ ] Add UI state polish: loading/empty/error on Queue + Case
+
+### PR13 — Analysis as a first-class step (Re-analyze + revisions)
+**Goal:** demonstrate the system taking operational responsibility over time.
+- [ ] Add “Re-analyze” action (creates a new revision) without requiring a new case
+- [ ] Show what changed since last revision (diff summary + new/cleared issues)
+- [ ] Ensure approval/publish always target the latest revision (or explicitly choose)
+- [ ] Unit tests for revision lifecycle + state transitions
+
+### PR14 — Policy pack management (versioning + change control)
+**Goal:** higher-quality, maintainable decisions as complexity grows.
+- [ ] Policy pack registry with semantic versions + changelog
+- [ ] “Policy version used” surfaced in UI and exported packet
+- [ ] Guardrail tests: fixtures + golden cases remain stable across policy updates
+
+### PR15 — Multi-tenant + auth (Supabase RLS)
+**Goal:** “serve far more people” safely.
+- [ ] Auth (Supabase)
+- [ ] Tenant model (orgs/projects) + RLS policies
+- [ ] Data scoping for cases/revisions/packets
+- [ ] Minimal role model: reviewer vs approver
+
+### PR16 — Scale reliability (background jobs + retries)
+**Goal:** make AI + persistence reliable under load.
+- [ ] Move analysis and packet generation to background job queue
+- [ ] Retry strategy for OpenAI timeouts/rate limits
+- [ ] Idempotency keys for revision creation + packet generation
+- [ ] Basic observability: job status, last error, timing
+
+### PR17 — Explicit human-critical decision (product + audit)
+**Goal:** explicitly name and enforce the one decision that must remain human.
+- [ ] In-product copy: “Escalation override must remain human” + rationale
+- [ ] Require sign-off on escalations (already enforced) + show it prominently in packet UI
+- [ ] Audit view: who approved, why, and what evidence they saw
+
 ## CI
 GitHub Actions runs `lint`, `test`, and `build` for the web app on every PR and on pushes to `main`.
